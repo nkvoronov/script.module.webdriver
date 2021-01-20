@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+	<category label="32000">
+		<setting id="content_view" type="number" label="32001" default="500" />
+		<setting id="web_timeout" type="number" label="32002" default="60" />
+		<setting id="use_docker" type="bool" label="32003" default="false" />
+		<setting id="use_debug" type="bool" label="32004" default="false" />
+		<setting id="visible_browser" type="bool" label="32005" default="false" visible="eq(-1,true)+eq(-2,false)" />
+	</category>
+</settings>
