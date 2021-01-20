@@ -4,8 +4,7 @@
 		version="1.0.0.001"
 		provider-name="YDRAGON">
 	<requires>
-		<import addon="xbmc.python" version="2.18.0" />
-		<import addon="script.module.urllib3" version="1.0" />
+		<import addon="xbmc.python" version="3.0.0" />
 	</requires>
 	<extension point="xbmc.python.module" library="lib" />
 	<extension point="xbmc.addon.metadata">
