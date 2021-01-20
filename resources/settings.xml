@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8"?>
 <settings>
 	<category label="32000">
-		<setting id="content_view" type="number" label="32001" default="500" />
-		<setting id="web_timeout" type="number" label="32002" default="60" />
-		<setting id="use_docker" type="bool" label="32003" default="false" />
-		<setting id="use_debug" type="bool" label="32004" default="false" />
-		<setting id="visible_browser" type="bool" label="32005" default="false" visible="eq(-1,true)+eq(-2,false)" />
+		<setting label="32001" type="lsep"/>
+		<setting action="RunScript(script.epg.vsetv,action=editchannels)" label="32002" type="action"/>    
+		<setting label="32003" type="lsep"/>
+		<setting default="" id="xmltv_path" label="32004" option="writeable" type="folder"/>
+		<setting default="2" id="count_day" label="32005" type="enum" values="1|2|3|4|5|6|7"/>
 	</category>
 </settings>
