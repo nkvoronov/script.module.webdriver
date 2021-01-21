@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <settings>
 	<category label="32000">
-		<setting label="32001" type="lsep"/>
-		<setting action="RunScript(script.epg.vsetv,action=editchannels)" label="32002" type="action"/>    
-		<setting label="32003" type="lsep"/>
-		<setting default="" id="xmltv_path" label="32004" option="writeable" type="folder"/>
-		<setting default="2" id="count_day" label="32005" type="enum" values="1|2|3|4|5|6|7"/>
+		<setting label="32001" type="text" id="version" default="88.0.4324.96" enable="false" />
+		<setting label="32002" type="action" action="RunScript(script.module.webdriver,action=selectdriver)"/>
+		<setting label="32003" type="bool" id="debug" default="false" />
 	</category>
 </settings>

@@ -13,6 +13,18 @@ msgstr ""
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgctxt "#33000"
-msgid "OpenLoad Stream Authorisation"
-msgstr "OpenLoad авторизация потока"
+msgctxt "#32000"
+msgid "General"
+msgstr "Общие"
+
+msgctxt "#32001"
+msgid "ChromeDriver version"
+msgstr "Версия ChromeDriver"
+
+msgctxt "#32002"
+msgid "Select ChromeDriver version"
+msgstr "Выберите версию ChromeDriver"
+
+msgctxt "#32003"
+msgid "Debug"
+msgstr "Отладка"

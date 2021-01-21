@@ -13,6 +13,18 @@ msgstr ""
 "Language: uk_UA\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgctxt "#33000"
-msgid "OpenLoad Stream Authorisation"
-msgstr "OpenLoad авторизація потоку"
+msgctxt "#32000"
+msgid "General"
+msgstr "Загальні"
+
+msgctxt "#32001"
+msgid "ChromeDriver version"
+msgstr "Версія ChromeDriver"
+
+msgctxt "#32002"
+msgid "Select ChromeDriver version"
+msgstr "Виберіть версію ChromeDriver"
+
+msgctxt "#32003"
+msgid "Debug"
+msgstr "Отладка"
