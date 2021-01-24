@@ -8,12 +8,11 @@ import xbmcaddon
 import xbmcgui
 import traceback
 import platform
-import urllib
 import requests
 import zipfile
 import shutil
-from urllib.request import Request
-from urllib.request import urlopen
+import urllib
+import urllib2
 from bs4 import BeautifulSoup as bs
 
 addonid = 'script.module.webdriver'
@@ -25,20 +24,20 @@ dparam = 'index.html?path='
 WFile = 'chromedriver_win32.zip'
 LFile = 'chromedriver_linux64.zip'
 
-class WDS(object):
+class WDS:
     def __init__(self):
         try:
             self._addonid = addonid
             self._addon = xbmcaddon.Addon(self._addonid)
             self._addonName = self._addon.getAddonInfo('name')
             self._addonPath = self._addon.getAddonInfo('path')
-            self._addonProfile = xbmcvfs.translatePath(self._addon.getAddonInfo('profile'))
+            self._addonProfile = xbmc.translatePath(self._addon.getAddonInfo('profile'))
             if platform.system() == 'Windows':
-                self._addonBin = xbmcvfs.translatePath(os.path.join(os.path.join(os.path.join(self._addonPath, 'bin'), 'chromedriver'), 'win32'))
+                self._addonBin = xbmc.translatePath(os.path.join(os.path.join(os.path.join(self._addonPath, 'bin'), 'chromedriver'), 'win32'))
             if platform.system() == 'Linux':
-                self._addonBin = xbmcvfs.translatePath(os.path.join(os.path.join(os.path.join(self._addonPath, 'bin'), 'chromedriver'), 'linux64'))
+                self._addonBin = xbmc.translatePath(os.path.join(os.path.join(os.path.join(self._addonPath, 'bin'), 'chromedriver'), 'linux64'))
             self._addonDownload = self._addonProfile + 'download'
-            
+
             self._version = self._addon.getSetting('version')
             self._delfiles = self._addon.getSetting('delfiles')
             self._debug = self._addon.getSetting('debug')
@@ -46,13 +45,13 @@ class WDS(object):
             self.getParams()
             self.setAction()
 
-        except Exception as e:
+        except Exception, e:
             self.addLog('WDS::__init__', 'ERROR: (' + repr(e) + ')', logErorr)
 
     def getLang(self, code):
         return self._addon.getLocalizedString(code)
 
-    def addLog(self, source, text, level=xbmc.LOGINFO):
+    def addLog(self, source, text, level=xbmc.LOGNOTICE):
         if self._debug == 'false':
             return
         xbmc.log('## ' + self._addonName + ' ## ' + source + ' ## ' + text, level)
@@ -68,7 +67,7 @@ class WDS(object):
             self.addLog('WDS::getParams', 'params: %s' % params, logErorr)
             self._action = params.get('action', '')
             self.addLog('WDS::getParams', 'exit_function')
-        except Exception as e:
+        except Exception, e:
             self.addLog('WDS::getParams', 'ERROR: (' + repr(e) + ')', logErorr)
 
     def setAction(self):
@@ -77,7 +76,7 @@ class WDS(object):
             if self._action == 'selectdriver':
                 self.selectDriver()
             self.addLog('WDS::setAction', 'exit_function')
-        except Exception as e:
+        except Exception, e:
             self.addLog('WDS::setAction', 'ERROR: (' + repr(e) + ')', logErorr)
 
     def selectDriver(self):
@@ -85,7 +84,7 @@ class WDS(object):
             self.addLog('WDS::selectDriver', 'enter_function')
             self.getListDriver()
             self.addLog('WDS::selectDriver', 'exit_function')
-        except Exception as e:
+        except Exception, e:
             self.addLog('WDS::selectDriver', 'ERROR: (' + repr(e) + ')', logErorr)
 
     def getListDriver(self):
@@ -120,7 +119,7 @@ class WDS(object):
                     self.downloadDriver(sel_source_name)
             xbmc.executebuiltin('Dialog.Close(busydialognocancel)')
             self.addLog('WDS::getListDriver', 'exit_function')
-        except Exception as e:
+        except Exception, e:
             xbmc.executebuiltin('Dialog.Close(busydialognocancel)')
             dialog = xbmcgui.Dialog()
             ok = dialog.ok('List Driver', 'ERROR: ' + repr(e))
@@ -132,7 +131,7 @@ class WDS(object):
             nddir = os.path.join(self._addonDownload, version)
             if not os.path.exists(nddir):
                 os.makedirs(nddir)
-            
+
             if platform.system() == 'Windows':
                 url = dhost + version + '/' + WFile
                 ndfile = os.path.join(nddir, WFile)
@@ -143,27 +142,27 @@ class WDS(object):
             self.addLog('WDS::downloadDriver', url)
             self.addLog('WDS::downloadDriver', ndfile)
             self.addLog('WDS::downloadDriver', self._addonBin)
-            
+
             get_response = requests.get(url,stream=True)
             with open(ndfile, 'wb') as f:
                 for chunk in get_response.iter_content(chunk_size=1024):
                     if chunk: # filter out keep-alive new chunks
                         f.write(chunk)
-                        
+
             with zipfile.ZipFile(ndfile,"r") as zip_ref:
                 zip_ref.extractall(self._addonBin)
 
             dialog = xbmcgui.Dialog()
             dialog.ok(self.getLang(32002), version)
-            
+
             self._version = version
             self._addon.setSetting('version', version)
-            
+
             if self._delfiles == 'true':
                 shutil.rmtree(self._addonDownload) 
-                
+
             self.addLog('WDS::downloadDriver', 'exit_function')
-        except Exception as e:
+        except Exception, e:
             self.addLog('WDS::downloadDriver', 'ERROR: (' + repr(e) + ')', logErorr)
 
     def loadUrl(self, url):
@@ -173,11 +172,10 @@ class WDS(object):
             headers = {
             'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3',
             'Content-Type': 'application/x-www-form-urlencoded'}
-            connect = urlopen(Request(url, headers = headers))
+            connect = urllib2.urlopen(urllib2.Request(url, urllib.urlencode({}), headers))
             cont = connect.read()
             connect.close()
             self.addLog('WDS::loadUrl', 'exit_function')
             return cont
-        except Exception as e:
+        except Exception, e:
             self.addLog('WDS::loadUrl(' + url + ')', 'ERROR: (' + repr(e) + ')', logErorr)
-            
