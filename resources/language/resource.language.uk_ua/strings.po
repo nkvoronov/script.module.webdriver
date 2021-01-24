@@ -26,5 +26,9 @@ msgid "Select ChromeDriver version"
 msgstr "Виберіть версію ChromeDriver"
 
 msgctxt "#32003"
+msgid "Delete downloaded files"
+msgstr "Видалити завантажені файли"
+
+msgctxt "#32004"
 msgid "Debug"
 msgstr "Отладка"
