@@ -8,7 +8,6 @@ import xbmcaddon
 import xbmcgui
 import traceback
 import platform
-import urllib
 import requests
 import zipfile
 import shutil
