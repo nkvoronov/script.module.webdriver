@@ -2,16 +2,24 @@
 
 CONTAINER_NAME='selenium-chrome'
 
-# run container ?
+# create container
 if [ ! "$(docker ps -q -f name=${CONTAINER_NAME})" ]; then
-  # exist container
-  if [ "$(docker ps -aq -f status=exited -f name=${CONTAINER_NAME})" ]; then
-    # start container
-    docker start ${CONTAINER_NAME}
-  else
-    # create container
-    docker run -d --name ${CONTAINER_NAME} -p 4444:4444 -v /dev/shm:/dev/shm selenium/standalone-chrome
-  fi
+  docker run -d --name ${CONTAINER_NAME} -p 4444:4444 -v /dev/shm:/dev/shm --shm-size="2g" selenium/standalone-chrome
   # wait
   sleep 4
+else
+  # stop container
+  if [ ! "$(docker ps -aq -f status=exited -f name=${CONTAINER_NAME})" ]; then
+    docker stop ${CONTAINER_NAME}
+    # wait
+    sleep 4
+  fi
+
+  # start container
+  if [ "$(docker ps -aq -f status=exited -f name=${CONTAINER_NAME})" ]; then
+    docker start ${CONTAINER_NAME}
+    # wait
+    sleep 4
+  fi
 fi
+
